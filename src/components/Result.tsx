@@ -5,8 +5,9 @@ export default function Result(props: any) {
   const imgUrl = props.response.data.secure_url;
   const clipboard = useClipboard();
 
-  const animateButton = (e: any) => {
+  var animateButton = function (e: any) {
     e.preventDefault();
+    //reset animation
     e.target.classList.remove("animate");
 
     e.target.classList.add("animate");
