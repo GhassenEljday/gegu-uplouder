@@ -1,24 +1,27 @@
-import { useState } from "react";
 import axios from "axios";
-import Loader from "./Loader";
 import { ReactComponent as AddImage } from "../images/photo.svg";
 
-export default function ImageUplouder() {
-  const [louder, useLouder] = useState("");
-
-  const uploudImage = (files: any) => {
+export default function ImageUplouder(props: any) {
+  const UploudImage = (files: any) => {
     const formData = new FormData();
     formData.append("file", files[0]);
     formData.append("upload_preset", "GejUploud");
     formData.append("cloud_name", "ghasseneljday");
+    // change the step number
+    props.step(2);
 
+    // send a post request to cloudinary for upload the image.
     axios
       .post(
         "https://api.cloudinary.com/v1_1/ghasseneljday/image/upload",
         formData
       )
-      .then((response) => {
-        console.log(response);
+      .then((response: any) => {
+        const data = response;
+        // send back the response to the App component.
+        props.response(data);
+        // change the step number.
+        props.step(3);
       })
       .catch((err) => {
         console.error(err);
@@ -40,7 +43,7 @@ export default function ImageUplouder() {
   const fileDrop = (e: any): void => {
     e.preventDefault();
     const files = e.dataTransfer.files;
-    uploudImage(files);
+    UploudImage(files);
   };
 
   return (
@@ -68,10 +71,9 @@ export default function ImageUplouder() {
         <div className="input">
           <input
             onChange={(event: any) => {
-              uploudImage(event.target.files);
+              UploudImage(event.target.files);
             }}
             type="file"
-            name="file"
             id="file"
             className="inputfile"
           />
