@@ -1,9 +1,12 @@
 import { useClipboard } from "use-clipboard-copy";
+import toast, { Toaster } from "react-hot-toast";
 import { ReactComponent as Done } from "../images/done.svg";
 
 export default function Result(props: any) {
   const imgUrl = props.response.data.secure_url;
   const clipboard = useClipboard();
+
+  const notify = () => toast.success("Copied successfully");
 
   var animateButton = function (e: any) {
     e.preventDefault();
@@ -40,9 +43,17 @@ export default function Result(props: any) {
           readOnly
           value={imgUrl}
         />
-        <button className="bubbly-button" onClick={clipboard.copy} id="copy">
+        <button
+          className="bubbly-button"
+          onClick={() => {
+            clipboard.copy();
+            notify();
+          }}
+          id="copy"
+        >
           Copy
         </button>
+        <Toaster />
       </div>
     </div>
   );
